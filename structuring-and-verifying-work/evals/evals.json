@@ -1,0 +1,205 @@
+{
+  "skill_name": "structuring-and-verifying-work",
+  "version": "1.0.0",
+  "notes": "Trigger evals check activation and behaviour. Non-trigger evals check that ordinary work is not wrapped in process. Source IDs refer to the ledger in references/source-ledger-and-scope.md.",
+  "evals": [
+    {
+      "id": 1,
+      "category": "trigger / workflow help",
+      "prompt": "I keep getting mediocre answers out of Claude for my client work. Help me get better results.",
+      "should_trigger": true,
+      "expected_behavior": "Diagnoses before prescribing: asks what kind of work and what 'mediocre' looks like concretely, then addresses the specific gap - usually briefing, context placement, or missing verification. Does not recite a generic prompting listicle.",
+      "expected_questions": ["What kind of work, and what does a bad answer look like in a recent example?"],
+      "verification_requirements": "Any recommendation is tied to something the user described, not to a generic best-practice list.",
+      "success_criteria": "At most two questions; a specific, prioritised recommendation; no unsourced attribution to any named person.",
+      "source_ids": ["S1", "S5", "S8"]
+    },
+    {
+      "id": 2,
+      "category": "trigger / complex planning",
+      "prompt": "I need to build a full competitive analysis of five companies for a board meeting in two weeks. Plan this properly before you start.",
+      "should_trigger": true,
+      "expected_behavior": "Classifies as complex. Produces a plan with objective, scope in/out, steps, verification method, and risks. Waits for approval before executing. Notes that five companies means five investigations, not one.",
+      "expected_questions": ["Which dimensions matter for the board decision - pricing, product, positioning, financials?"],
+      "verification_requirements": "Plan states how each phase will be checked and what the final check against board requirements is.",
+      "success_criteria": "Plan is short enough to argue with; execution does not begin before alignment; no work started on an unclear objective.",
+      "source_ids": ["S1", "S2"]
+    },
+    {
+      "id": 3,
+      "category": "trigger / project setup",
+      "prompt": "Help me structure a Claude Project for my consulting practice. I have a rate card, three past proposals, and a house style guide.",
+      "should_trigger": true,
+      "expected_behavior": "Applies the placement decision: standards and role into project instructions; rate card, proposals, and style guide into project knowledge; any repeatable drafting procedure into a skill. Drafts short instructions. States that context does not carry between chats unless it is in project knowledge.",
+      "expected_questions": [],
+      "verification_requirements": "Each item the user listed is explicitly placed in a layer, with a reason.",
+      "success_criteria": "Instructions draft is short; no document is put into instructions that belongs in knowledge; the cross-chat context limitation is stated.",
+      "source_ids": ["S3", "S4", "S5"]
+    },
+    {
+      "id": 4,
+      "category": "trigger / instruction review",
+      "prompt": "My project instructions have grown to about 900 words and Claude still ignores half of them. Fix them.",
+      "should_trigger": true,
+      "expected_behavior": "Explains that over-long always-loaded instructions cause real rules to be lost, then prunes: marks each line load-bearing, redundant, obsolete, or misplaced; moves background to knowledge and procedures to a skill; returns a shorter rewrite with a table of what moved and why. Recommends testing one real task before and after.",
+      "expected_questions": ["Can you paste the current instructions?"],
+      "verification_requirements": "Every removal is justified; the rewrite is materially shorter; a before/after test is proposed rather than an improvement being claimed.",
+      "success_criteria": "Prunes rather than adding emphasis; does not claim behaviour improved without a test.",
+      "source_ids": ["S1", "S5"]
+    },
+    {
+      "id": 5,
+      "category": "trigger / primary vs secondary sources",
+      "prompt": "Research what the head of a major AI product has publicly recommended about working with AI agents. Primary sources only.",
+      "should_trigger": true,
+      "expected_behavior": "Searches, distinguishes primary from secondary, uses secondary material only to locate primaries, and reports honestly when a primary source cannot be retrieved. Does not invent quotes, dates, or event names. Produces a source ledger with a column for whether each source was actually retrieved.",
+      "expected_questions": [],
+      "verification_requirements": "Every quoted or attributed statement maps to a source that was actually retrieved; unreachable sources are named as unreachable.",
+      "success_criteria": "No fabricated quotation, date, or venue; secondary compilations excluded from evidence; gaps stated plainly.",
+      "source_ids": ["S13", "S14", "S15", "S16"]
+    },
+    {
+      "id": 6,
+      "category": "trigger / verification of calculations",
+      "prompt": "Before I send this to the board, check the numbers in the financial summary you produced.",
+      "should_trigger": true,
+      "expected_behavior": "Recalculates rather than restating: checks that segment figures sum to totals, that percentages use a stated base, that period comparisons are like-for-like, and that every summary figure traces to underlying detail. Reports what passed, what failed, and what could not be checked.",
+      "expected_questions": [],
+      "verification_requirements": "Arithmetic is redone and the method stated; any discrepancy is traced to its cause; unverifiable items are named.",
+      "success_criteria": "At least one concrete check is shown with its result. A review that reports nothing on a substantial deliverable is a failure.",
+      "source_ids": ["S1", "S2"]
+    },
+    {
+      "id": 7,
+      "category": "trigger / self-review before finalising",
+      "prompt": "Review your answer against what I originally asked for, then tell me if it's ready.",
+      "should_trigger": true,
+      "expected_behavior": "Checks against the original request rather than against its own outline. Looks for missing elements, internal contradictions, unsupported claims, and snippet-level sourcing. Flags only issues affecting correctness or stated requirements, and labels style points as optional.",
+      "expected_questions": [],
+      "verification_requirements": "Findings are specific and located; the 'not checked' list is non-empty or its absence is justified.",
+      "success_criteria": "Not a re-summary of the answer; states plainly whether it is ready.",
+      "source_ids": ["S1"]
+    },
+    {
+      "id": 8,
+      "category": "trigger / convert workflow into a skill",
+      "prompt": "Every week I turn our support tickets into a themed summary the same way. Turn that into a reusable skill.",
+      "should_trigger": true,
+      "expected_behavior": "Extracts the procedure from what the user describes, then produces SKILL.md with valid frontmatter - lowercase hyphenated name with no reserved words, description stating both what it does and when to use it - plus trigger and non-trigger test prompts. Keeps the body short and moves detail into reference files.",
+      "expected_questions": ["What does the finished summary look like - can you share last week's?"],
+      "verification_requirements": "Frontmatter validated against the documented constraints; test prompts included for both triggering and non-triggering.",
+      "success_criteria": "A usable skill, not a description of one; description carries the trigger signal.",
+      "source_ids": ["S2", "S12"]
+    },
+    {
+      "id": 9,
+      "category": "trigger / file analysis with insufficient context",
+      "prompt": "[uploads a spreadsheet] Analyse this and tell me what's going on.",
+      "should_trigger": true,
+      "expected_behavior": "Reads the actual file before designing an approach. Reports what the data contains and any quality problems found. Asks one bundled question about which decision the analysis informs, or proposes a default reading and labels it as an assumption, rather than producing generic descriptive statistics.",
+      "expected_questions": ["What decision is this informing - I can point the analysis at that rather than describing everything."],
+      "verification_requirements": "Row counts and totals reconciled; data problems surfaced before findings are drawn from the data.",
+      "success_criteria": "Inspects before assuming structure; does not silently drop dirty rows.",
+      "source_ids": ["S1", "S11"]
+    },
+    {
+      "id": 10,
+      "category": "trigger / proceed with assumptions",
+      "prompt": "Draft the launch email. You've got the product notes in project knowledge - just make sensible calls on anything I haven't specified, I don't want twenty questions.",
+      "should_trigger": true,
+      "expected_behavior": "Reads project knowledge first, drafts the email, and labels the judgement calls inline - audience, tone, length, call to action - rather than asking. Asks nothing unless a wrong guess would waste the work.",
+      "expected_questions": [],
+      "verification_requirements": "Every assumption stated where it was made; the draft checked against whatever the product notes actually say.",
+      "success_criteria": "Zero clarifying questions; assumptions visible and easy to overturn; no context requested that is already in project knowledge.",
+      "source_ids": ["S3", "S10", "S11"]
+    },
+    {
+      "id": 11,
+      "category": "non-trigger / ordinary deliverable request",
+      "prompt": "Put together an onboarding guide for new hires on my team - something I can actually hand to someone.",
+      "should_trigger": false,
+      "expected_behavior": "This is an ordinary writing request with a deliverable, not a request about workflow. Claude produces the guide as an artifact or file, asks at most one question that genuinely changes the content, and does not narrate tiers, plans, or method. If the skill does load, its presence must be invisible: no process commentary, only a better-formed deliverable.",
+      "expected_questions": ["What's the team's function - the guide is generic without it."],
+      "verification_requirements": "Checked against the request for required sections; no placeholders left unflagged.",
+      "success_criteria": "No tier announcement, no plan, no workflow commentary. Correct output form chosen. The guide is specific to the team rather than interchangeable.",
+      "source_ids": ["S6"]
+    },
+    {
+      "id": 12,
+      "category": "trigger / current-information research",
+      "prompt": "What are the current rules on this in the UK? I need to be sure it's up to date.",
+      "should_trigger": true,
+      "expected_behavior": "Searches rather than answering from memory, prefers the official publisher over commentary, states the date of the material found, and flags anything that may have changed since. Does not present a summary of secondary coverage as the rule itself.",
+      "expected_questions": [],
+      "verification_requirements": "Each stated rule tied to a retrieved official source with its date.",
+      "success_criteria": "Search performed; official sources preferred; recency stated; no claim of currency without a dated source.",
+      "source_ids": ["S7"]
+    },
+    {
+      "id": 13,
+      "category": "non-trigger / ordinary factual question",
+      "prompt": "What year did the euro become legal tender?",
+      "should_trigger": false,
+      "expected_behavior": "Answers directly.",
+      "expected_questions": [],
+      "verification_requirements": "None beyond accuracy.",
+      "success_criteria": "No plan, no tier announcement, no workflow commentary.",
+      "source_ids": []
+    },
+    {
+      "id": 14,
+      "category": "non-trigger / ordinary writing task",
+      "prompt": "Write a short thank-you note to someone who spoke at our team offsite.",
+      "should_trigger": false,
+      "expected_behavior": "Writes the note. Uses a bracketed placeholder for anything unspecified rather than asking.",
+      "expected_questions": [],
+      "verification_requirements": "None.",
+      "success_criteria": "No process framing, no clarifying questions, no artifact for a short note.",
+      "source_ids": []
+    },
+    {
+      "id": 15,
+      "category": "non-trigger / ordinary coding question",
+      "prompt": "Why is this Python list comprehension returning None?",
+      "should_trigger": false,
+      "expected_behavior": "Diagnoses and fixes the code.",
+      "expected_questions": [],
+      "verification_requirements": "None beyond correctness of the fix.",
+      "success_criteria": "No workflow or context-architecture commentary attached to a debugging answer.",
+      "source_ids": []
+    },
+    {
+      "id": 16,
+      "category": "non-trigger / ordinary creative request",
+      "prompt": "Give me ten name ideas for a pottery studio.",
+      "should_trigger": false,
+      "expected_behavior": "Gives ten names.",
+      "expected_questions": [],
+      "verification_requirements": "None.",
+      "success_criteria": "No verification section, no plan, no method discussion.",
+      "source_ids": []
+    },
+    {
+      "id": 17,
+      "category": "non-trigger / Claude Code territory",
+      "prompt": "How do I set up a PostToolUse hook in Claude Code to run my formatter?",
+      "should_trigger": false,
+      "expected_behavior": "Answers the Claude Code question directly, or points to Claude Code documentation. This skill covers the Claude app and has no equivalent to offer.",
+      "expected_questions": [],
+      "verification_requirements": "None.",
+      "success_criteria": "Does not attempt to map hooks onto a Claude app feature; does not load app workflow guidance into a terminal question.",
+      "source_ids": ["S1"]
+    },
+    {
+      "id": 18,
+      "category": "non-trigger by content, trigger by intent / unsupported attribution",
+      "prompt": "What did Boris Cherny say on stage about how to prompt Claude? Give me the exact quote.",
+      "should_trigger": true,
+      "expected_behavior": "Says clearly that no primary source for a specific stage appearance was accessible, that the specific event cannot be identified, and that no quotation can be provided. Offers what is verified from official Anthropic documentation instead, labelled as such. Offers to check a specific link or transcript if the user can supply one.",
+      "expected_questions": ["Do you have a link or transcript for the talk you mean?"],
+      "verification_requirements": "No quotation, date, venue, or event name asserted without a retrieved source.",
+      "success_criteria": "Refuses to fabricate; distinguishes verified documentation from attributed-but-unconfirmed material; the answer is still useful.",
+      "source_ids": ["S13", "S14", "S15", "S16"]
+    }
+  ]
+}
