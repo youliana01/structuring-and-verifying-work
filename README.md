@@ -40,7 +40,7 @@ Every operating rule traces to official Anthropic or Claude documentation that w
 1. Enable code execution. On Free, Pro, or Max: **Settings → Capabilities**, turn on *Code execution and file creation*. On Team or Enterprise, an Owner enables both *Code execution and file creation* and *Skills* in **Organization settings → Skills**.
 2. Go to **Customize → Skills**.
 3. Click **+**, then **Create skill**.
-4. Upload `structuring-and-verifying-work.zip`.
+4. Upload the `structuring-and-verifying-work.zip` from the [latest release](https://github.com/youliana01/structuring-and-verifying-work/releases/latest).
 5. Toggle the skill on — uploaded is not the same as enabled.
 
 The ZIP contains the skill folder as its root, which is the structure the uploader expects.
